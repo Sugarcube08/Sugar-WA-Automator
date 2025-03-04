@@ -11,6 +11,34 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+def banner():
+    print(r"""
+███████╗██╗   ██╗ ██████╗  █████╗ ██████╗      ██     ██  █████╗    
+██╔════╝██║   ██║██╔════╝ ██╔══██╗██╔══██╗     ██     ██ ██   ██        
+███████╗██║   ██║██║  ███╗███████║██████╔╝     ██  █  ██ ███████    
+╚════██║██║   ██║██║   ██║██╔══██║██║  ██║     ██ ███ ██ ██   ██    
+███████║╚██████╔╝╚██████╔╝██║  ██║██║  ██║      ███ ███  ██   ██    
+╚══════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝      ╚══ ╚═╝  ╚═╝  ╚═╝                             
+🚀 Sugar WA Automator 🚀
+⚡ Bulk WhatsApp Messaging Tool ⚡
+-------------------------------------
+📩 Automate WhatsApp messages with ease!
+📂 Supports file-based and auto-generated contacts
+🛠️ Uses Selenium for web automation
+🔒 Secure and efficient
+-------------------------------------
+
+---
+
+Made with ❤️  by SugarCube
+---
+Support Me
+If you find this project helpful, consider buying me a coffee!
+---
+
+""")
+
+
 def initialize_browser():
     # Fix GTK warnings
     os.environ["NO_AT_BRIDGE"] = "1"
@@ -95,10 +123,10 @@ def send_message(phone_number, message, driver):
         WebDriverWait(driver, 10).until(
             EC.any_of(
                 EC.presence_of_element_located((By.XPATH, "//div[@contenteditable='true']")),  
-                EC.presence_of_element_located((By.XPATH, "//div[contains(@class, 'x12lqup9') and contains(@class, 'x1o1kx08')]"))  
-            )
+                EC.presence_of_element_located((By.XPATH, "//div[contains(@class, 'x12lqup9') and contains(@class, 'x1o1kx08')]"))
+               )
         )
-
+        time.sleep(2)  # Wait for chat to load60
         # Check if phone number is invalid
         if driver.find_elements(By.XPATH, "//div[contains(@class, 'x12lqup9') and contains(@class, 'x1o1kx08')]"):
             print(f"❌ Error: {phone_number} is NOT registered on WhatsApp. Skipping...")
@@ -109,7 +137,7 @@ def send_message(phone_number, message, driver):
         time.sleep(2)
 
         print("📌 Locating send button...")
-        send_button = WebDriverWait(driver, 20).until(
+        send_button = WebDriverWait(driver, 2).until(
             EC.element_to_be_clickable((By.XPATH, "//button[@aria-label='Send']"))
         )
         print("📤 Clicking send button...")
@@ -140,7 +168,86 @@ def file_mode():
 
     print("✅ All messages processed.")
     driver.quit()
-               
-if __name__ == "__main__":
     
-    file_mode()
+def auto_mode():
+    
+    with open("messages.txt", "r") as message_file:
+        message = message_file.read().strip() 
+         
+    initial = int(input("Enter Initial Number to start with (without country code +91): "))
+    indent = int(input("Enter Indent of Successful Sent Messages: "))
+    direct = int(input("Enter Direction \n 1. Incrementing(contact+1) \n 2. Decrementing(contact-1\n>>): "))
+    DBfile = "ContactDB.txt"
+    driver = initialize_browser()
+    i = 0
+    
+    if not os.path.exists(DBfile):
+        with open(DBfile, "w") as file:
+            file.write("")
+            
+    if direct == 1:
+        while i < indent:
+            number = "+91" + str(initial)
+            flag = send_message(number , message, driver)
+            initial = initial + 1
+            if flag:
+                with open(DBfile, "a") as file:
+                    file.write(str(number) + "\n")
+                    print(f"✅ {number} is added to DB")
+                    i += 1
+            
+    elif direct == 2:
+        while i < indent:
+            number = "+91" + str(initial)
+            flag = send_message(number, message, driver)
+            initial = initial - 1
+            if flag:
+                with open(DBfile, "a") as file:
+                    file.write(str(number) + "\n")
+                    print(f"✅ {number} is added to DB")
+                    i += 1
+            
+    else:
+        print("Invalid Input")
+        driver.quit()
+        return
+    
+    print("✅ All messages processed.")
+    driver.quit()
+    
+def clean_DB():
+    
+    DBfile_path = "ContactDB.txt"  # Define file name
+
+    # Read existing numbers and store unique ones in a set
+    if os.path.exists(DBfile_path):
+        with open(DBfile_path, "r") as file:
+            existing_numbers = {line.strip() for line in file if line.strip()}  # Remove duplicates and empty lines
+    else:
+        existing_numbers = set()
+
+    # Write back unique numbers
+    with open(DBfile_path, "w") as file:
+        file.write("\n".join(existing_numbers) + "\n")  # Write each number on a new line
+
+    print("✅ DataBase Cleaned and Formated.")    
+               
+if __name__ == "__main__": 
+    banner()
+    while True: 
+        choice = int(input("📌 Choose Mode: \n 1. File Mode \n 2. Auto Mode\n>>>"))
+        if choice == 1:
+            file_mode()
+        elif choice == 2:    
+            auto_mode()
+            clean_DB()
+        else:
+            print("Invalid Input")
+        
+        ch = input("Do you want to continue? (y/n): ").strip().lower()  or "n"
+        if ch == 'n':
+            break
+        else:
+            continue
+    print("👋 Thank you for using Sugar WA Automator. Goodbye!")
+    
