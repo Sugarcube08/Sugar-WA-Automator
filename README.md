@@ -123,7 +123,7 @@ rm whatsapp_cookies.pkl
 
 ---
 
-### ❤️ Made with Love by SugarCube
+### Made with ❤️  by SugarCube
 ---
 
 ## ☕ Support Me
