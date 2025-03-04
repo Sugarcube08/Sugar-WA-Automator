@@ -1,0 +1,9 @@
+selenium>=4.0.0
+pickle-mixin
+logging
+chromedriver-autoinstaller
+webdriver-manager
+requests
+beautifulsoup4
+tqdm
+shutils
