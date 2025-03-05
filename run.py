@@ -68,7 +68,7 @@ def initialize_browser():
     chrome_options.add_argument("--disable-blink-features=AutomationControlled")  # Reduces bot detection
     chrome_options.add_argument("--disable-software-rasterizer")  # No software-based GPU rendering
     chrome_options.add_argument("--window-size=1920,1080")  # Set a default resolution
-    chrome_options.add_argument("--user-data-dir=/path/to/chrome_profile")  # Use custom Chrome profile
+    chrome_options.add_argument(f"--user-data-dir={profile_dir}")  # Use custom Chrome profile
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])  # Hides automation banner
     chrome_options.add_experimental_option("useAutomationExtension", False)  # Disables automation extension
     chrome_options.add_argument("--disable-popup-blocking")  # Ensures popups are not blocked
@@ -152,11 +152,12 @@ def send_message(phone_number, message, driver):
         traceback.print_exc()
         return False 
 
-def file_mode():
-    with open("messages.txt", "r") as message_file:
+def file_mode(message_path, contact_path):
+    with open(message_path, "r") as message_file:
         message = message_file.read().strip()  
 
-    with open("contacts.txt", "r") as contacts_file:
+    with open(contact_path
+              , "r") as contacts_file:
         contacts = [line.strip() for line in contacts_file.readlines() if line.strip()]
 
     driver = initialize_browser()
@@ -169,9 +170,9 @@ def file_mode():
     print("✅ All messages processed.")
     driver.quit()
     
-def auto_mode():
+def auto_mode(message_path):
     
-    with open("messages.txt", "r") as message_file:
+    with open(message_path, "r") as message_file:
         message = message_file.read().strip() 
          
     initial = int(input("Enter Initial Number to start with (without country code +91): "))
@@ -235,19 +236,35 @@ def clean_DB():
 if __name__ == "__main__": 
     banner()
     while True: 
-        choice = int(input("📌 Choose Mode: \n 1. File Mode \n 2. Auto Mode\n>>>"))
-        if choice == 1:
-            file_mode()
-        elif choice == 2:    
-            auto_mode()
-            clean_DB()
+        message_path = input("ENTER Path to message file (messages.txt or left empty for default): ").strip() or "messages.txt"
+        if not os.path.exists(message_path):
+            print("❌ Invalid Path. Please try again.")
+            continue
         else:
+            print(f"✅ Message file >{message_path}< loaded successfully.\n")
+          
+     
+        contact_path = input("ENTER Path to contact file (contacts.txt or left empty for default): ").strip() or "contacts.txt"
+        if not os.path.exists(contact_path):
+            print("❌ Invalid Path. Please try again.")
+            continue
+        else:
+            print(f"✅ Contact file >{contact_path}< loaded successfully.\n")
+       
+        choice = int(input("\n📌 Choose Mode: \n 1. File Mode \n 2. Auto Mode\n>>>").strip() or 3)
+        if choice == 1:
+            file_mode(message_path, contact_path)
+        elif choice == 2:    
+            auto_mode(message_path)
+            clean_DB()
+        else:     
             print("Invalid Input")
         
-        ch = input("Do you want to continue? (y/n): ").strip().lower()  or "n"
+        ch = input("\nDo you want to continue? (y/n): ").strip().lower()  or "n"
         if ch == 'n':
+            print("👋 Thank you for using Sugar WA Automator. Goodbye!")
             break
         else:
             continue
-    print("👋 Thank you for using Sugar WA Automator. Goodbye!")
+            
     

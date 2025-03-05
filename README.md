@@ -3,7 +3,7 @@
 ![WhatsApp Bot](https://img.shields.io/badge/WhatsApp%20Automation-Powered%20by%20Selenium-green?style=flat-square&logo=whatsapp)
 
 ## 📌 Introduction
-📲 **Sugar-WA-Automator** automates bulk messaging via **WhatsApp Web** using **Selenium**. It supports multiple messaging modes, manages browser sessions with cookies, and mimics human-like behavior to prevent detection.
+📲 **Sugar-WA-Automator** automates bulk messaging via **WhatsApp Web** using **Selenium**. This bot loads contacts from a file, manages browser sessions with cookies, and mimics human-like behavior to prevent detection.
 
 ---
 
@@ -18,14 +18,7 @@ Ensure the following are installed on your system:
 
 #### **🔹 On Ubuntu:**
 ```bash
-sudo apt update && sudo apt install -y chromium-browser python3 python3-pip
-```
-🔹 **Manually Install Chromedriver**:
-```bash
-CHROME_VERSION=$(chromium-browser --version | grep -oP '\d+\.\d+\.\d+')
-wget https://chromedriver.storage.googleapis.com/$CHROME_VERSION/chromedriver_linux64.zip
-unzip chromedriver_linux64.zip
-sudo mv chromedriver /usr/local/bin/
+sudo apt update && sudo apt install -y chromium-browser chromium-chromedriver python3 python3-pip
 ```
 
 #### **🔹 On Windows (Using Chocolatey):**
@@ -60,40 +53,35 @@ python3 run.py
 ---
 
 ## 📜 How to Use
+1. **Prepare Your Message & Contacts**
+   - ✉️ Edit `messages.txt` with your message.
+   - ☎️ Edit `contacts.txt`, adding one phone number per line (international format, e.g., `+1234567890`).
 
-### 1️⃣ **Prepare Your Message & Contacts**
-- ✉️ Edit `messages.txt` with your message.
-- ☎️ Edit `contacts.txt`, adding one phone number per line in **international format** (`+1234567890`).
+2. **Run the Scripts**
+   - 🔐 **Login First**: Execute `login.py` to authenticate and save session cookies.
+   - 🚀 **Run the Bot**: Execute `run.py` to send messages.
+   - The script will:
+     - ✅ Open WhatsApp Web
+     - ✅ Load session cookies (if available)
+     - ✅ Send messages sequentially
+     - ✅ Log errors for invalid numbers
 
-### 2️⃣ **Choose a Messaging Mode**
-When you run the script, it will prompt you to select a mode:
-
-#### 🔹 **File Mode (Predefined Contacts)**
-```bash
-python3 run.py
-```
-- Loads numbers from `contacts.txt`
-- Sends messages sequentially
-
-#### 🔹 **Auto Mode (Sequential Number Generator)**
-Auto Mode automatically generates phone numbers based on a starting number.
-- 📌 You must enter:
-  - Initial phone number (without country code, e.g., `9876543210`)
-  - Number of messages to send
-  - Direction: **Incrementing (+1)** or **Decrementing (-1)**
-
-### 3️⃣ **Monitor Execution**
-📊 Keep an eye on the terminal for real-time status updates.
+3. **Monitor Execution**
+   - 📊 Keep an eye on the terminal output for real-time status updates.
 
 ---
 
-## 🔧 Features
-✅ **Supports Bulk Messaging** (Predefined contacts & auto-generated numbers)  
-✅ **Saves & Loads WhatsApp Web Session** (No need to scan QR code every time)  
-✅ **Human-Like Delays** (To prevent detection)  
-✅ **Auto Mode with Number Generation**  
-✅ **Database Cleaning to Remove Duplicates**  
-✅ **Error Logging & Skipping Invalid Numbers**  
+## 🌟 Features  
+
+✅ **Bulk WhatsApp Messaging** – Send messages to multiple contacts efficiently.  
+✅ **Automated Contact Handling** – Load contacts from a file or generate numbers dynamically.  
+✅ **Smart Error Handling** – Detects invalid numbers and skips them automatically.  
+✅ **Session Persistence** – Saves and loads WhatsApp Web cookies to avoid frequent logins.  
+✅ **User-Controlled Execution** – Choose between **file-based** or **auto-generated** contact modes.  
+✅ **Randomized Delays** – Mimics human-like behavior to prevent detection.  
+✅ **Optimized Performance** – Uses Chromium with custom configurations for stability.  
+✅ **Database Cleanup** – Automatically removes duplicate contacts from logs.  
+✅ **Multi-Platform Support** – Works on **Ubuntu** and **Windows** with minimal setup.  
 
 ---
 
@@ -131,7 +119,7 @@ rm whatsapp_cookies.pkl
 🔍 **Facing issues? Try these fixes:**
 
 - 🛑 **Error: Chromedriver version mismatch**
-  - Install the correct version:
+  - Run:
     ```bash
     pip install --upgrade chromedriver-autoinstaller
     ```
@@ -149,12 +137,9 @@ rm whatsapp_cookies.pkl
 
 ---
 
-### Made with ❤️  by SugarCube
-
+### ❤️ Made with Love by SugarCube
 ---
 
 ## ☕ Support Me
-If you find this project helpful, consider buying me a coffee!  
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support%20Me-orange?style=flat-square&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/sugarcube08)
-
-
+If you find this project helpful, consider buying me a coffee!
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support%20Me-orange?style=flat-square&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/Sugar-WA-Automator)
