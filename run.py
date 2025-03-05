@@ -120,7 +120,7 @@ def send_message(phone_number, message, driver):
 
     try:
         print("⏳ Waiting for chat or error message...")
-        WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, 5).until(
             EC.any_of(
                 EC.presence_of_element_located((By.XPATH, "//div[@contenteditable='true']")),  
                 EC.presence_of_element_located((By.XPATH, "//div[contains(@class, 'x12lqup9') and contains(@class, 'x1o1kx08')]"))
@@ -134,8 +134,6 @@ def send_message(phone_number, message, driver):
 
         # If no error, proceed with sending
         print("✅ Chat loaded successfully!")
-        time.sleep(2)
-
         print("📌 Locating send button...")
         send_button = WebDriverWait(driver, 2).until(
             EC.element_to_be_clickable((By.XPATH, "//button[@aria-label='Send']"))
